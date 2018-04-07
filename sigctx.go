@@ -39,7 +39,7 @@ func (sx *Sigctx) Start(ctx context.Context) *Sigctx {
 	sx.m.Lock()
 	defer sx.m.Unlock()
 	if sx.ctx != nil {
-		return
+		return sx
 	}
 	sx.ctx, sx.cncl = context.WithCancel(ctx)
 	sx.c = make(chan os.Signal, 1)
