@@ -16,7 +16,8 @@ sx := sigctx.New(os.Interrupt)
 
 // start to listen signals and get its context.
 // the ctx will be done when receive signals.
-ctx := sx.Start().Context()
+// if parent context be done, it terminates listening and the ctx.
+ctx := sx.Start(context.Background()).Context()
 
 // TODO: work with the ctx.
 
