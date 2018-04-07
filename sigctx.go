@@ -35,7 +35,7 @@ func (sx *Sigctx) SetHandler(sig os.Signal, h Handler) *Sigctx {
 }
 
 // Start starts signal listening loop.
-func (sx *Sigctx) Start(ctx context.Context) {
+func (sx *Sigctx) Start(ctx context.Context) *Sigctx {
 	sx.m.Lock()
 	defer sx.m.Unlock()
 	if sx.ctx != nil {
@@ -45,6 +45,7 @@ func (sx *Sigctx) Start(ctx context.Context) {
 	sx.c = make(chan os.Signal, 1)
 	signal.Notify(sx.c, sx.sigs...)
 	go sx.loop()
+	return sx
 }
 
 func (sx *Sigctx) loop() {
@@ -74,4 +75,9 @@ func (sx *Sigctx) Stop() {
 		return
 	}
 	sx.cncl()
+}
+
+// Context returns a context of signal listening loop
+func (sx *Sigctx) Context() context.Context {
+	return sx.ctx
 }
