@@ -1,7 +1,7 @@
 # sigctx - Signal Context
 
 [![GoDoc](https://godoc.org/github.com/koron-go/sigctx?status.svg)](https://godoc.org/github.com/koron-go/sigctx)
-[![CircleCI](https://circleci.com/gh/koron-go/sigctx.svg?style=svg)](https://circleci.com/gh/koron-go/sigctx)
+[![CircleCI](https://img.shields.io/circleci/project/github/koron-go/sigctx.svg)](https://circleci.com/gh/koron-go/sigctx)
 [![Go Report Card](https://goreportcard.com/badge/github.com/koron-go/sigctx)](https://goreportcard.com/report/github.com/koron-go/sigctx)
 
 sigctx is a context of signal listening loop.
