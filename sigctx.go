@@ -7,6 +7,19 @@ import (
 	"sync"
 )
 
+// WithCancelSignal returns a child context which will be canceled with one of signals.
+// CancelFunc should be called at least once.
+//
+// This is a polyfill for `conetxt.WithCancelSignal()` for future go runtime.
+// https://github.com/golang/go/issues/37255
+func WithCancelSignal(ctx context.Context, signals ...os.Signal) (context.Context, context.CancelFunc) {
+	if len(signals) == 0 {
+		return context.WithCancel(ctx)
+	}
+	sx := New(signals...).Start(ctx)
+	return sx.ctx, func() { sx.Stop() }
+}
+
 // Sigctx is a context wrapper for signal handler.
 type Sigctx struct {
 	m     sync.Mutex

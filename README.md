@@ -8,8 +8,23 @@ sigctx is a context of signal listening loop.
 
 ## Example
 
-```golang
+Using `WithCancelSignal()`, it is similar to `context.WithCancel()`
 
+```golang
+import (
+    "os"
+    "github.com/koron-go/sigctx"
+)
+
+ctx, cancel := sigctx.WithCancelSignal(ctx.Background(), os.Interrupt)
+defer cancel() // call cancel() at least once.
+
+// TODO: work with the ctx.
+```
+
+Or try `*sigctx.Sigctx` to control in detail.
+
+```golang
 import (
     "os"
     "github.com/koron-go/sigctx"
