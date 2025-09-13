@@ -1,9 +1,9 @@
 name: Go
 
-on: [push, pull_request]
+on: [push]
 
 env:
-  GOPATH: ${{ github.workspace }}/..
+  GO_VERSION: '>=1.24.0'
 
 jobs:
 
@@ -13,21 +13,30 @@ jobs:
 
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest, windows-latest ]
+        os:
+        - ubuntu-latest
+        - ubuntu-24.04-arm
+        - macos-latest
+        - windows-latest
     steps:
 
-    - name: Setup Go
-      uses: actions/setup-go@v1
+    - uses: actions/checkout@v5
+
+    - uses: actions/setup-go@v6
       with:
-        go-version: 1.x
+        go-version: ${{ env.GO_VERSION }}
 
-    - name: Check out code into the Go module directory
-      uses: actions/checkout@v1
-      with:
-        path: src/github.com/${{ github.repository }}
+    - run: go test ./...
 
-    - name: Unit test
-      run: go test
+    - name: Build all "main" packages
+      shell: bash
+      run: |
+        root=$(go list -f '{{.ImportPath}}' .)
+        for path in $(go list -f '{{if (eq .Name "main")}}{{.ImportPath}}{{end}}' ./... ) ; do
+          dir=".${path#${root}}"
+          printf "building %s\t(%s)\n" $(basename "$path") $dir
+          ( cd "$dir" && go build )
+        done
 
-    - name: Build
-      run: go build
+# based on: github.com/koron-go/_skeleton/.github/workflows/go.yml
+# $Hash:681012ee2e20780fbb40f995e914299c5f0f438364f8c274f66ee7c8$
