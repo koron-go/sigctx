@@ -1,3 +1,4 @@
+// Package sigctx provides signal aware context.Context
 package sigctx
 
 import (
