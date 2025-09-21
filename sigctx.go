@@ -11,8 +11,13 @@ import (
 // WithCancelSignal returns a child context which will be canceled with one of signals.
 // CancelFunc should be called at least once.
 //
-// This is a polyfill for `conetxt.WithCancelSignal()` for future go runtime.
-// https://github.com/golang/go/issues/37255
+// This can be replaced by "os/signal".NotifyContext, introduced in Go 1.16.
+//
+// If you want to define a context that is canceled by a signal as well as a
+// handler for each signal, you can use New() *Sigctx directly from this
+// package.
+//
+// Deprecated: Use "os/ginal".NotifyContext instead, introduced in Go 1.16.
 func WithCancelSignal(ctx context.Context, signals ...os.Signal) (context.Context, context.CancelFunc) {
 	if len(signals) == 0 {
 		return context.WithCancel(ctx)
