@@ -6,6 +6,11 @@
 
 sigctx is a context of signal listening loop.
 
+In Go 1.16 and later, [singal.NotifyContext][signal] can be used to achieve the same effect as sigctx.WithCancelSignal,
+so it is recommended to use [signal.NotifyContext][signal] instead.
+
+[signal]:https://pkg.go.dev/os/signal#NotifyContext
+
 ## Example
 
 Using `WithCancelSignal()`, it is similar to `context.WithCancel()`
